@@ -10,10 +10,10 @@ module Rainpress
     	script = remove_newlines(script) unless options[:preserveNewlines]
     	
 		  # remove unneeded spaces
-     	script = removeSpaces(script) unless options[:preserveSpaces]
+     	script = remove_spaces(script) unless options[:preserveSpaces]
     	
 		  # replace colours with shorter names
-    	script = shortenColors(script) unless options[:preserveColors]
+    	script = shorten_colors(script) unless options[:preserveColors]
     	
 		  script
 		end
@@ -48,12 +48,12 @@ module Rainpress
   		script.gsub(/\n|\r/,'')
   	end
   	
-  	def removeSpaces(script)
+  	def remove_spaces(script)
   		# TODO ...
   		script
   	end
   	
-  	def shortenColors(script)
+  	def shorten_colors(script)
   		# TODO ...
   		script
   	end
