@@ -20,6 +20,9 @@ module Rainpress
 			# comment floating in text			 
 			input = 's/*ss*/ss';
 			assert_equal('sss', @packer.remove_comments(input))			
+      # empty string
+      input = ''
+      assert_equal('', @packer.remove_comments(input))
 		end
 		
     # Test Rainpress::Packer.remove_newlines
@@ -36,6 +39,9 @@ module Rainpress
       # newlines floatin in text
       input = "sss\n||\r\nsss"
       assert_equal('sss||sss', @packer.remove_newlines(input))
+      # empty string
+      input = ''
+      assert_equal('', @packer.remove_newlines(input))
 		end
 		
 	end
