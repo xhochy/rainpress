@@ -16,9 +16,11 @@ doc = {
 
 ## Tasks ##
 
+task :test => ['doc/index.html']
 task :doc => ['doc/index.html']
-task :devel => [:doc]
-task :default => [:devel, :test]
+task :all => [:doc, :test]
+task :default => [:all]
+
 
 ## clean Task ##
 
