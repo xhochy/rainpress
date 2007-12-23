@@ -16,7 +16,12 @@ doc = {
 
 ## Tasks ##
 
-task :test => ['doc/index.html']
+task :test do
+  require 'rainpress/test_packer.rb'
+  require 'test/unit/ui/console/testrunner'
+  Test::Unit::UI::Console::TestRunner.run(Rainpress::TestPacker)
+end
+
 task :doc => ['doc/index.html']
 task :all => [:doc, :test]
 task :default => [:all]
