@@ -7,7 +7,7 @@ module Rainpress
     	script = remove_comments(script) unless options[:preserveComments]
     	
   		# remove newlines
-    	script = removeNewlines(script) unless options[:preserveNewlines]
+    	script = remove_newlines(script) unless options[:preserveNewlines]
     	
 		  # remove unneeded spaces
      	script = removeSpaces(script) unless options[:preserveSpaces]
@@ -42,10 +42,10 @@ module Rainpress
       # return
   		script
   	end
-  	
+
+    # Remove all newline characters
   	def remove_newlines(script)
-  		# TODO ...
-  		script
+  		script.gsub(/\n|\r/,'')
   	end
   	
   	def removeSpaces(script)

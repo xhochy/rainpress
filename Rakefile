@@ -23,7 +23,7 @@ task :test do
 end
 
 task :doc => ['doc/index.html']
-task :all => [:doc, :test]
+task :all => [:test, :doc]
 task :default => [:all]
 
 
