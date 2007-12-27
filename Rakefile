@@ -17,9 +17,7 @@ doc = {
 ## Tasks ##
 
 task :test do
-  require 'rainpress/test_packer.rb'
-  require 'test/unit/ui/console/testrunner'
-  Test::Unit::UI::Console::TestRunner.run(Rainpress::TestPacker)
+  sh 'rcov rainpress_test.rb'
 end
 
 task :doc => ['doc/index.html']
@@ -30,6 +28,7 @@ task :default => [:all]
 ## clean Task ##
 
 CLEAN.include('doc/')
+CLEAN.include('coverage/')
 
 ## File Tasks ##
 
