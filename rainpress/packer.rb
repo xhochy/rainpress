@@ -121,7 +121,18 @@ module Rainpress
       script = script.gsub(';}', '}')
       # Replace background-color: with background:
       script = script.gsub('background-color:', 'background:')
-
+      # Replace font-weight:normal; with 400, bold with 700
+      script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*;/,'font-weight:400;')
+      script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*\}/,'font-weight:400}')
+      script = script.gsub(/font[\s]*:[\s]*normal[\s;\}]*/) do |match|
+        match.sub('normal', '400')
+      end
+      script = script.gsub(/font-weight[\s]*:[\s]*bold[\s]*;/,'font-weight:700;')
+      script = script.gsub(/font-weight[\s]*:[\s]*bold[\s]*\}/,'font-weight:700}')
+      script = script.gsub(/font[\s]*:[\s]*bold[\s;\}]*/) do |match|
+        match.sub('bold', '700')
+      end
+      
       script
     end
     
