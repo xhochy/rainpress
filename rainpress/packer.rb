@@ -48,8 +48,17 @@ module Rainpress
   		script.gsub(/\n|\r/,'')
   	end
   	
-  	def remove_spaces(script)
-  		# TODO ...
+    # (a) Turn mutiple Spaces into a single
+    # (b) remove spaces around ;:{},
+    # (c) remove tabs
+    def remove_spaces(script)
+  		script = script.gsub(/(\s(\s)+)/, ' ')
+      script = script.gsub(/\s*;\s*/,';')
+      script = script.gsub(/\s*:\s*/,':')
+      script = script.gsub(/\s*\{\s*/,'{')
+      script = script.gsub(/\s*\}\s*/,'}')
+      script = script.gsub(/\s*,\s*/,',')
+      script = script.gsub("\t",'');
   		script
   	end
   	
