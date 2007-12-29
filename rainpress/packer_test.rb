@@ -154,6 +154,10 @@ module Rainpress
       assert_equal(':.06', @packer.compress(input, options))
       input = '10.6'
       assert_equal('10.6', @packer.compress(input, options))
+      
+      # Replace background-color: with background:
+      input = 'background-color:'
+      assert_equal('background:', @packer.compress(input, options))
     end
 		
 	end

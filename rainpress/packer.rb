@@ -104,6 +104,8 @@ module Rainpress
       script = script.gsub(/[:\s]0+\.(\d+)/) do |match|
         match.sub('0', '') # only first '0' !!
       end
+      # Replace background-color: with background:
+      script = script.gsub('background-color:', 'background:')
 
       script
     end
