@@ -14,7 +14,10 @@ module Rainpress
     	
 		  # replace colours with shorter names
     	script = shorten_colors(script) unless options[:preserveColors]
-    	
+      
+      # make all other things
+    	script = do_misc(script) unless options[:skipMisc]
+      
 		  script
 		end
   
@@ -65,7 +68,26 @@ module Rainpress
   	def shorten_colors(script)
   		# TODO ...
   		script
-  	end
+    end
+  
+    def do_misc(script)
+      # Replace 0(pt,px,em,%) with 0 but only when preceded by : or a white-space
+      script = script.gsub(/([\s:]+)(0)(px|em|%|in|cm|mm|pc|pt|ex)/) do |match|
+        match.gsub(/(px|em|%|in|cm|mm|pc|pt|ex)/,'')
+      end
+      # Replace 0 0 0 0; with 0.
+      script = script.gsub(':0 0 0 0;', ':0;')
+      script = script.gsub(':0 0 0;', ':0;')
+      script = script.gsub(':0 0;', ':0;')
+      # Replace background-position:0; with background-position:0 0;
+      script = script.gsub('background-position:0;', 'background-position:0 0;');
+      # Replace 0.6 to .6, but only when preceded by : or a white-space
+      script = script.gsub(/[:\s]0+\.(\d+)/) do |match|
+        match.sub('0', '') # only first '0' !!
+      end
+
+      script
+    end
     
   end
   

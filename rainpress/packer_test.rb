@@ -15,7 +15,8 @@ module Rainpress
         :preserveComments => false,
         :preserveNewlines => true,
         :preserveSpaces => true,
-        :preserveColors => true
+        :preserveColors => true,
+        :skipMisc => true
       }  
 			# plain comment -> ''
 			input = '/* sss */';
@@ -37,7 +38,8 @@ module Rainpress
         :preserveComments => true,
         :preserveNewlines => false,
         :preserveSpaces => true,
-        :preserveColors => true
+        :preserveColors => true,
+        :skipMisc => true
       }  
       # plain unix-newline
       input = "\n"
@@ -61,7 +63,8 @@ module Rainpress
         :preserveComments => true,
         :preserveNewlines => true,
         :preserveSpaces => false,
-        :preserveColors => true
+        :preserveColors => true,
+        :skipMisc => true
       }  
       # (a) Turn mutiple Spaces into a single, but not less
       input = '  ' # 2 spaces
@@ -82,6 +85,56 @@ module Rainpress
       # (c) remove tabs
       input = "\t"
       assert_equal('', @packer.compress(input, options))
+    end
+  
+    def test_do_misc
+      options = {
+        :preserveComments => true,
+        :preserveNewlines => true,
+        :preserveSpaces => true,
+        :preserveColors => true,
+        :skipMisc => false
+      }  
+      # Replace 0(pt,px,em,%) with 0
+      input = ' 0px'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = ' 0em'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = ' 0pt'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = ' 0%'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = ' 0in'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = ' 0cm '
+      assert_equal(' 0 ', @packer.compress(input, options))
+      input = ':0mm'
+      assert_equal(':0', @packer.compress(input, options))
+      input = ' 0pc'
+      assert_equal(' 0', @packer.compress(input, options))
+      input = '  0ex'
+      assert_equal('  0', @packer.compress(input, options))
+      input = ' 10ex'
+      assert_equal(' 10ex', @packer.compress(input, options))
+      
+      # Replace 0 0 0 0; with 0.
+      input = ':0 0;'
+      assert_equal(':0;', @packer.compress(input, options))
+      input = ':0 0 0;'
+      assert_equal(':0;', @packer.compress(input, options))
+      input = ':0 0 0 0;'
+      assert_equal(':0;', @packer.compress(input, options))
+      # Keep 'background-position:0 0;' !!
+      input = 'background-position:0 0;'
+      assert_equal('background-position:0 0;', @packer.compress(input, options))
+      
+      # Replace 0.6 to .6, but only when preceded by : or a white-space
+      input = ' 0.6'
+      assert_equal(' .6', @packer.compress(input, options))
+      input = ':0.06'
+      assert_equal(':.06', @packer.compress(input, options))
+      input = '10.6'
+      assert_equal('10.6', @packer.compress(input, options))
     end
 		
 	end
