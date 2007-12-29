@@ -92,7 +92,7 @@ module Rainpress
       script = script.gsub(/:[\s]*black[\s]*\}/, ':#000}')
       # shotern several numbers to names
       script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000);/, ':red;')
-      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000\)}/, ':red}')
+      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000)\}/, ':red}')
       
   		script
     end
