@@ -86,6 +86,25 @@ module Rainpress
       input = "\t"
       assert_equal('', @packer.compress(input, options))
     end
+    
+    def test_shorten_colors
+      options = {
+        :preserveComments => true,
+        :preserveNewlines => true,
+        :preserveSpaces => true,
+        :preserveColors => false,
+        :skipMisc => true
+      } 
+      # rgb(50,101,152) to #326598
+      input = 'color:rgb(12,101,152)'
+      assert_equal('color:#0c6598', @packer.compress(input, options))
+      # #AABBCC to #ABC
+      input = 'color:#AABBCC'
+      assert_equal('color:#ABC', @packer.compress(input, options))
+      # Keep chroma(color="#FFFFFF"); ... due to IE
+      input = 'chroma(color="#FFFFFF");'
+      assert_equal('chroma(color="#FFFFFF");', @packer.compress(input, options))
+    end
   
     def test_do_misc
       options = {

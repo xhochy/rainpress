@@ -66,7 +66,26 @@ module Rainpress
   	end
   	
   	def shorten_colors(script)
-  		# TODO ...
+  		# rgb(50,101,152) to #326598
+      script = script.gsub(/rgb\s*\(\s*([0-9,\s]+)\s*\)/) do |match|
+        out = '#'
+        $1.split(',').each do |num|
+          if num.to_i < 16 
+            out += '0'
+          end
+          out += num.to_i.to_s(16) # convert to hex
+        end
+        out
+      end
+      # #AABBCC to #ABC, keep if preceed by a '='
+      script = script.gsub(/([^\"'=\s])(\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/) do |match|
+        out = match        
+        if ($3 == $4) and ($5 == $6) and ($7 == $8)
+          out = $1 + '#' + $3 + $5 + $7 
+        end
+        out
+      end
+      
   		script
     end
   
