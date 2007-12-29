@@ -20,6 +20,11 @@ task :test do
   sh 'rcov rainpress_test.rb'
 end
 
+task :source_deb do 
+  sh 'debuild -S -I.svn -us -uc'
+end
+task :source_deb => [:clean]
+
 task :doc => ['doc/index.html']
 task :all => [:test, :doc]
 task :default => [:all]

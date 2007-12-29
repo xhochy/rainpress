@@ -1,0 +1,12 @@
+Source: rainpress
+Section: devel
+Priority: extra
+Maintainer: Uwe L. Korn <packaging@xhochy.com>
+Build-Depends: debhelper (>= 5), rake, rdoc, graphviz
+Standards-Version: 3.7.3
+
+Package: rainpress
+Architecture: any
+Depends: ruby
+Description: CSS Compressor in Ruby
+ CSS Compressor in Ruby
