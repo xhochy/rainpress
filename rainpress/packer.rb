@@ -80,11 +80,19 @@ module Rainpress
       # #AABBCC to #ABC, keep if preceed by a '='
       script = script.gsub(/([^\"'=\s])(\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/) do |match|
         out = match        
-        if ($3 == $4) and ($5 == $6) and ($7 == $8)
-          out = $1 + '#' + $3 + $5 + $7 
+        if ($3.downcase == $4.downcase) and ($5.downcase == $6.downcase) and ($7.downcase == $8.downcase)
+          out = $1 + '#' + $3.downcase + $5.downcase + $7.downcase 
         end
         out
       end
+      # shorten several names to numbers
+      script = script.gsub(/:[\s]*white[\s]*;/, ':#fff;')
+      script = script.gsub(/:[\s]*white[\s]*\}/, ':#fff}')
+      script = script.gsub(/:[\s]*black[\s]*;/, ':#000;')
+      script = script.gsub(/:[\s]*black[\s]*\}/, ':#000}')
+      # shotern several numbers to names
+      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000);/, ':red;')
+      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000)}/, ':red}')
       
   		script
     end
@@ -96,7 +104,10 @@ module Rainpress
       end
       # Replace 0 0 0 0; with 0.
       script = script.gsub(':0 0 0 0;', ':0;')
+      script = script.gsub(':0 0 0 0}', ':0}')
       script = script.gsub(':0 0 0;', ':0;')
+      script = script.gsub(':0 0 0}', ':0}')
+      script = script.gsub(':0 0}', ':0}')
       script = script.gsub(':0 0;', ':0;')
       # Replace background-position:0; with background-position:0 0;
       script = script.gsub('background-position:0;', 'background-position:0 0;');
@@ -104,6 +115,10 @@ module Rainpress
       script = script.gsub(/[:\s]0+\.(\d+)/) do |match|
         match.sub('0', '') # only first '0' !!
       end
+      # Replace ;;;; with ;
+      script = script.gsub(/[;]+/, ';')
+      # Replace ;} with }
+      script = script.gsub(';}', '}')
       # Replace background-color: with background:
       script = script.gsub('background-color:', 'background:')
 

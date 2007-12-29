@@ -98,12 +98,25 @@ module Rainpress
       # rgb(50,101,152) to #326598
       input = 'color:rgb(12,101,152)'
       assert_equal('color:#0c6598', @packer.compress(input, options))
+      
       # #AABBCC to #ABC
-      input = 'color:#AABBCC'
-      assert_equal('color:#ABC', @packer.compress(input, options))
+      input = 'color:#AAbBCC'
+      assert_equal('color:#abc', @packer.compress(input, options))
       # Keep chroma(color="#FFFFFF"); ... due to IE
       input = 'chroma(color="#FFFFFF");'
       assert_equal('chroma(color="#FFFFFF");', @packer.compress(input, options))
+      
+      # shorten several names to numbers
+      input = 'color:white;'
+      assert_equal('color:#fff;', @packer.compress(input, options))
+      input = 'color: white}'
+      assert_equal('color:#fff}', @packer.compress(input, options))
+      
+      # shotern several numbers to names
+      input = 'color:#ff0000;'
+      assert_equal('color:red;', @packer.compress(input, options))
+      input = 'color:#F00;'
+      assert_equal('color:red;', @packer.compress(input, options))
     end
   
     def test_do_misc
@@ -143,6 +156,8 @@ module Rainpress
       assert_equal(':0;', @packer.compress(input, options))
       input = ':0 0 0 0;'
       assert_equal(':0;', @packer.compress(input, options))
+      input = ':0 0 0 0}'
+      assert_equal(':0}', @packer.compress(input, options))
       # Keep 'background-position:0 0;' !!
       input = 'background-position:0 0;'
       assert_equal('background-position:0 0;', @packer.compress(input, options))
@@ -154,6 +169,14 @@ module Rainpress
       assert_equal(':.06', @packer.compress(input, options))
       input = '10.6'
       assert_equal('10.6', @packer.compress(input, options))
+      
+      # Replace ;;;; with ;
+      input = 'ss;;;ss'
+      assert_equal('ss;ss', @packer.compress(input, options))
+      
+      # Replace ;} with }
+      input = 'ss;sss;}ss'
+      assert_equal('ss;sss}ss', @packer.compress(input, options))
       
       # Replace background-color: with background:
       input = 'background-color:'
