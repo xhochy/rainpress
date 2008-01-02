@@ -29,9 +29,10 @@ task :doc => ['doc/index.html']
 task :all => [:test, :doc]
 task :default => [:all]
 
-task :publish_to_schoorbs_xhochy_com do
-  sh 'rm -rf /srv/www/schoorbs.xhochy.com/*'
-  sh 'cp -r build/site/* /srv/www/schoorbs.xhochy.com'
+task :publish_to_rainpress_xhochy_com => [:test, :doc]
+task :publish_to_rainpress_xhochy_com do
+  sh 'rm -rf /srv/www/port80/rainpress.xhochy.com/doc/'
+  sh 'cp -r doc/ /srv/www/port80/rainpress.xhochy.com'
 end
 
 
