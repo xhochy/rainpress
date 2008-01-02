@@ -45,7 +45,7 @@ CLEAN.include('coverage/')
 ## File Tasks ##
 
 file 'doc/index.html' => doc['Files'] do
-  Rake::Task[:clean].invoke
+  sh "rm -rf doc"
   
   cmd = 'rdoc --title ' + doc['Title']
   cmd+= ' --all --diagram --image-format png --inline-source --line-numbers '
