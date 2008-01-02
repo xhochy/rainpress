@@ -26,13 +26,14 @@ end
 task :source_deb => [:clean]
 
 task :doc => ['doc/index.html']
-task :all => [:test, :doc]
+task :all => [:doc, :test]
 task :default => [:all]
 
-task :publish_to_rainpress_xhochy_com => [:test, :doc]
+task :publish_to_rainpress_xhochy_com => [:doc, :test]
 task :publish_to_rainpress_xhochy_com do
   sh 'rm -rf /srv/www/port80/rainpress.xhochy.com/doc/'
-  sh 'cp -r doc/ /srv/www/port80/rainpress.xhochy.com'
+  sh 'rm -rf /srv/www/port80/rainpress.xhochy.com/coverage/'
+  sh 'cp -r doc/ coverage/ /srv/www/port80/rainpress.xhochy.com'
 end
 
 
