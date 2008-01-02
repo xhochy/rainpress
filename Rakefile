@@ -29,6 +29,11 @@ task :doc => ['doc/index.html']
 task :all => [:test, :doc]
 task :default => [:all]
 
+task :publish_to_schoorbs_xhochy_com do
+  sh 'rm -rf /srv/www/schoorbs.xhochy.com/*'
+  sh 'cp -r build/site/* /srv/www/schoorbs.xhochy.com'
+end
+
 
 ## clean Task ##
 
