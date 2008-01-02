@@ -185,6 +185,8 @@ module Rainpress
       # Replace font-weight:normal; with 400, bold with 700
       input = 'font-weight: normal;'
       assert_equal('font-weight:400;', @packer.compress(input, options))
+      input = 'font: normal;'
+      assert_equal('font: 400;', @packer.compress(input, options))
       input = 'font: bold 1px;'
       assert_equal('font: 700 1px;', @packer.compress(input, options))
     end
