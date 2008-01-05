@@ -27,6 +27,11 @@ task :source_deb do
 end
 task :source_deb => [:clean]
 
+task :binary_deb_fakeroot do
+  sh 'dpkg-buildpackage -rfakeroot'
+end
+task :binary_deb_fakeroot => [:source_deb]
+
 task :build_pot => [File.join('locale', 'rainpress.pot')]
 task :doc => ['doc/index.html']
 task :all => [:doc, :test]
@@ -43,6 +48,11 @@ end
 
 CLEAN.include('doc/')
 CLEAN.include('coverage/')
+CLEAN.include('build-stamp')
+CLEAN.include('configure-stamp')
+CLEAN.include('debian/rainpress/')
+CLEAN.include('debian/rainpress-doc/')
+CLEAN.include('debian/files')
 
 ## File Tasks ##
 

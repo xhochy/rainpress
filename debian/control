@@ -7,6 +7,20 @@ Standards-Version: 3.7.3
 
 Package: rainpress
 Architecture: any
+Suggests: rainpress-doc
 Depends: ruby
 Description: CSS Compressor in Ruby
- CSS Compressor in Ruby
+ Rainpress is a free (MIT-style license) CSS compressor written in Ruby. 
+ It could be used either as a library or as a standalone executable. Rainpress 
+ doesn't apply common compression algorithms like gzip, it remove unecessary 
+ characters and replaces long attributes with an shorter equivalent.
+ 
+Package: rainpress-doc
+Architecture: any
+Depends: ruby, rainpress
+Description: Documentation for Rainpress
+ Rainpress is a free (MIT-style license) CSS compressor written in Ruby. 
+ It could be used either as a library or as a standalone executable. Rainpress 
+ doesn't apply common compression algorithms like gzip, it remove unecessary 
+ characters and replaces long attributes with an shorter equivalent.
+
