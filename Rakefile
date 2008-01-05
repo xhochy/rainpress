@@ -6,6 +6,7 @@
 ## Includes ##
 
 require 'rake/clean'
+require 'gettext/utils'
 
 ## Config ##
 
@@ -16,6 +17,7 @@ doc = {
 
 ## Tasks ##
 
+
 task :test do
   sh 'rcov rainpress_test.rb'
 end
@@ -25,6 +27,7 @@ task :source_deb do
 end
 task :source_deb => [:clean]
 
+task :build_pot => [File.join('locale', 'rainpress.pot')]
 task :doc => ['doc/index.html']
 task :all => [:doc, :test]
 task :default => [:all]
@@ -36,7 +39,6 @@ task :publish_to_rainpress_xhochy_com do
   sh 'cp -r doc/ coverage/ /srv/www/port80/rainpress.xhochy.com'
 end
 
-
 ## clean Task ##
 
 CLEAN.include('doc/')
@@ -44,7 +46,12 @@ CLEAN.include('coverage/')
 
 ## File Tasks ##
 
-file 'doc/index.html' => doc['Files'] do
+file File.join('locale', 'rainpress.pot') => 'rainpress.rb' do
+  sh 'rgettext rainpress.rb -o ' + File.join('locale', 'rainpress.pot')
+  puts '!!! Remember to upload the updated pot-file to Launchpad/Translations !!!'
+end
+
+file File.join('doc', 'index.html') => doc['Files'] do
   sh "rm -rf doc"
   
   cmd = 'rdoc --title ' + doc['Title']

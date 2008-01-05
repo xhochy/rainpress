@@ -1,20 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'getoptlong'
+require 'gettext'
 require File.join(File.dirname(__FILE__), 'rainpress', 'packer.rb')
-
-## Functions ##
-
-# Explain to the user how to use Drossellog
-def usage
-	puts 'Rainpress -- CSS compressor |'
-  puts '----------------------------|'
-  puts ''
-  puts '--help, -h                 Display this help'
-  puts '--input, -i <file>         The CSS-file to be compressed, if not set stdin is used'
-  puts '--output, -o <file>        The output file, if not set, stdout is used'
-  exit
-end
 
 ## Var Init ##
 
@@ -26,6 +14,21 @@ opts = GetoptLong.new(
 
 $infile = nil
 $outfile = nil
+
+GetText::bindtextdomain('rainpress')
+
+## Functions ##
+
+# Explain to the user how to use Drossellog
+def usage
+  puts 'Rainpress -- CSS compressor |'
+  puts '----------------------------|'
+  puts ''
+  puts '--help, -h                 ' + GetText::_('Display this help')
+  puts '--input, -i <file>         ' + GetText::_('The CSS-file to be compressed, if not set stdin is used')
+  puts '--output, -o <file>        ' + GetText::_('The output file, if not set, stdout is used')
+  exit
+end
 
 ## Main ##
 
