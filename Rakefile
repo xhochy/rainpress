@@ -17,25 +17,17 @@ doc = {
 
 ## Tasks ##
 
-
 task :test do
   sh 'rcov rainpress_test.rb'
 end
 
-task :source_deb do 
-  sh 'debuild -S -I.svn -us -uc'
-end
-task :source_deb => [:clean]
-
-task :binary_deb_fakeroot do
-  sh 'dpkg-buildpackage -rfakeroot'
-end
-task :binary_deb_fakeroot => [:source_deb]
-
 task :build_pot => [File.join('locale', 'rainpress.pot')]
 task :doc => ['doc/index.html']
+
 task :all => [:doc, :test]
 task :default => [:all]
+
+## XhochY specific Tasks ##
 
 task :publish_to_rainpress_xhochy_com => [:doc, :test]
 task :publish_to_rainpress_xhochy_com do
@@ -53,6 +45,19 @@ CLEAN.include('configure-stamp')
 CLEAN.include('debian/rainpress/')
 CLEAN.include('debian/rainpress-doc/')
 CLEAN.include('debian/files')
+
+## Deb(ian) Package Tasks ##  
+
+task :source_deb do 
+  sh 'debuild -S -I.svn -us -uc'
+end
+task :source_deb => [:clean]
+
+task :binary_deb_fakeroot do
+  sh 'dpkg-buildpackage -rfakeroot'
+end
+task :binary_deb_fakeroot => [:source_deb]
+
 
 ## File Tasks ##
 
