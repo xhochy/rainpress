@@ -1,25 +1,65 @@
+# == About
+#
+# Rainpress is a compressor for CSS. It's written in ruby, but should not be 
+# limited to ruby projects.
+#
+# Rainpress does not apply common compression algorithms like gzip, it removes 
+# unnecessary characters and replaces some attributes with a shorter equivalent 
+# name.
+#
+# == Links
+#
+# * {Rainpress Website}[http://rainpress.xhochy.com/]
+# * {SVN repository}[http://code.google.com/p/rainpress/source]
+# * {Bugtracker}[https://bugs.launchpad.net/rainpress/]
+# * {Wiki}[http://code.google.com/p/rainpress/w/list]
+# * {Translations}[https://translations.launchpad.net/rainpress/]
+# * {XhochY Weblog (for Announcements about Rainpress)}[http://xhochy.org/en/]
+# * {Mailinglist}[http://groups.google.com/group/xy-oss-projects-discussion]
+# * {Continous Integration Builds and Tests}[http://cruisecontrol-rb.xhochy.com/builds/rainpress]
+# * {Freshmeat Record}[http://freshmeat.net/projects/rainpress]
 module Rainpress
 
+  # == Information
+  #
+  # This is the main class of Rainpress, create an instance of it to compress
+  # your CSS-styles.
+  #
+  # == Simple Usage
+  #
+  #   packer = Rainpress::Packer.new
+  #   compressed_style = packer.compress(style)
   class Packer
   
-    def compress(script, options = {})
-    	# remove comments
-    	script = remove_comments(script) unless options[:preserveComments]
+    # Use always this functions if you want to compress your CSS-style
+    #
+    # <b>Options:</b>
+    #
+    # * <tt>:preserveComments</tt> - if set to true, comments will not be 
+    #   removed
+    # * <tt>:preserveNewline</tt> - if set to true, newlines will not be removed
+    # * <tt>:preserveSpaces</tt> - if set to true, spaces will not be removed
+    # * <tt>:preserveColors</tt> - if set to true, colors will not be modified
+    # * <tt>:skipMisc</tt> - if set to true, miscellaneous compression parts
+    #   will be skipped
+    def compress(style, options = {})
+      # remove comments
+      style = remove_comments(style) unless options[:preserveComments]
     	
-  		# remove newlines
-    	script = remove_newlines(script) unless options[:preserveNewlines]
+  	  # remove newlines
+      style = remove_newlines(style) unless options[:preserveNewlines]
     	
-		  # remove unneeded spaces
-     	script = remove_spaces(script) unless options[:preserveSpaces]
+	  # remove unneeded spaces
+      style = remove_spaces(style) unless options[:preserveSpaces]
     	
-		  # replace colours with shorter names
-    	script = shorten_colors(script) unless options[:preserveColors]
+	  # replace colours with shorter names
+      style = shorten_colors(style) unless options[:preserveColors]
       
       # make all other things
-    	script = do_misc(script) unless options[:skipMisc]
+      style = do_misc(style) unless options[:skipMisc]
       
-		  script
-		end
+	  style
+	end
   
     # Remove all comments out of the CSS-Document
   	def remove_comments(script)
@@ -51,23 +91,31 @@ module Rainpress
   		script.gsub(/\n|\r/,'')
   	end
   	
-    # (a) Turn mutiple Spaces into a single
-    # (b) remove spaces around ;:{},
-    # (c) remove tabs
+    # 1. Turn mutiple spaces into a single
+    # 2. Remove spaces around ;:{},
+    # 3. Remove tabs
     def remove_spaces(script)
-  		script = script.gsub(/(\s(\s)+)/, ' ')
+  	  script = script.gsub(/(\s(\s)+)/, ' ')
       script = script.gsub(/\s*;\s*/,';')
       script = script.gsub(/\s*:\s*/,':')
       script = script.gsub(/\s*\{\s*/,'{')
       script = script.gsub(/\s*\}\s*/,'}')
       script = script.gsub(/\s*,\s*/,',')
-      script = script.gsub("\t",'');
-  		script
+      script.gsub("\t",'');
   	end
   	
-  	def shorten_colors(script)
-  		# rgb(50,101,152) to #326598
-      script = script.gsub(/rgb\s*\(\s*([0-9,\s]+)\s*\)/) do |match|
+  	# Replace color values with their shorter equivalent
+  	#
+  	# 1. Turn rgb(,,)-colors into #-values
+  	# 2. Shorten #AABBCC down to #ABC
+  	# 3. Replace names with their shorter hex-equivalent
+  	#    * white -> #fff
+   	#    * black -> #000
+  	# 4. Replace #-values with their shorter name
+  	#    * #f00 -> red
+  	def shorten_colors(style)
+  	  # rgb(50,101,152) to #326598
+      style = style.gsub(/rgb\s*\(\s*([0-9,\s]+)\s*\)/) do |match|
         out = '#'
         $1.split(',').each do |num|
           if num.to_i < 16 
@@ -78,7 +126,7 @@ module Rainpress
         out
       end
       # #AABBCC to #ABC, keep if preceed by a '='
-      script = script.gsub(/([^\"'=\s])(\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/) do |match|
+      style = style.gsub(/([^\"'=\s])(\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/) do |match|
         out = match        
         if ($3.downcase == $4.downcase) and ($5.downcase == $6.downcase) and ($7.downcase == $8.downcase)
           out = $1 + '#' + $3.downcase + $5.downcase + $7.downcase 
@@ -86,17 +134,18 @@ module Rainpress
         out
       end
       # shorten several names to numbers
-      script = script.gsub(/:[\s]*white[\s]*;/, ':#fff;')
-      script = script.gsub(/:[\s]*white[\s]*\}/, ':#fff}')
-      script = script.gsub(/:[\s]*black[\s]*;/, ':#000;')
-      script = script.gsub(/:[\s]*black[\s]*\}/, ':#000}')
+      style = style.gsub(/:[\s]*white[\s]*;/, ':#fff;')
+      style = style.gsub(/:[\s]*white[\s]*\}/, ':#fff}')
+      style = style.gsub(/:[\s]*black[\s]*;/, ':#000;')
+      style = style.gsub(/:[\s]*black[\s]*\}/, ':#000}')
       # shotern several numbers to names
-      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000);/, ':red;')
-      script = script.gsub(/:[\s]*#([fF]00|[fF]{2}0000)\}/, ':red}')
+      style = style.gsub(/:[\s]*#([fF]00|[fF]{2}0000);/, ':red;')
+      style = style.gsub(/:[\s]*#([fF]00|[fF]{2}0000)\}/, ':red}')
       
-  		script
+  	  style
     end
   
+    # Do miscellaneous compression methods on the style
     def do_misc(script)
       # Replace 0(pt,px,em,%) with 0 but only when preceded by : or a white-space
       script = script.gsub(/([\s:]+)(0)(px|em|%|in|cm|mm|pc|pt|ex)/) do |match|

@@ -70,7 +70,7 @@ file File.join('doc', 'index.html') => doc['Files'] do
   sh "rm -rf doc"
   
   cmd = 'rdoc --title ' + doc['Title']
-  cmd+= ' --all --diagram --image-format png --inline-source --line-numbers '
+  cmd+= ' --all --diagram --image-format png --inline-source --charset UTF-8 '
   cmd+= '--op doc/ --tab-width 4'
   sh cmd
 end 
