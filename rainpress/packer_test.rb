@@ -2,15 +2,16 @@ require 'test/unit'
 require File.join(File.dirname(__FILE__), 'packer.rb')
 
 module Rainpress
-	class TestPacker < Test::Unit::TestCase
+  # This class keeps all Tests for the class Rainpress::Packer
+  class TestPacker < Test::Unit::TestCase
 		
-		# create an instace of Rainpress::Packer for use in the tests
-		def setup
-			@packer = Rainpress::Packer.new
-		end
+	# Create an instace of Rainpress::Packer for use in the tests
+	def setup
+	  @packer = Rainpress::Packer.new
+	end
 		
-		# Test Rainpress::Packer.remove_comments
-		def test_remove_comments
+	# Test Rainpress::Packer.remove_comments
+	def test_remove_comments
       options = {
         :preserveComments => false,
         :preserveNewlines => true,
@@ -18,22 +19,26 @@ module Rainpress
         :preserveColors => true,
         :skipMisc => true
       }  
-			# plain comment -> ''
-			input = '/* sss */';
-			assert_equal('', @packer.compress(input, options))
-			# no comment -> no change
-			input = 'sss';
-			assert_equal('sss', @packer.compress(input, options))
-			# comment floating in text			 
-			input = 's/*ss*/ss';
-			assert_equal('sss', @packer.compress(input, options))			
+	  
+	  # plain comment -> ''
+	  input = '/* sss */';
+	  assert_equal('', @packer.compress(input, options))
+	  
+	  # no comment -> no change
+	  input = 'sss';
+	  assert_equal('sss', @packer.compress(input, options))
+	  
+	  # comment floating in text			 
+	  input = 's/*ss*/ss';
+	  assert_equal('sss', @packer.compress(input, options))			
+      
       # empty string
       input = ''
       assert_equal('', @packer.compress(input, options))
-		end
+	end
 		
     # Test Rainpress::Packer.remove_newlines
-		def test_remove_newlines
+    def test_remove_newlines
       options = {
         :preserveComments => true,
         :preserveNewlines => false,
@@ -41,23 +46,29 @@ module Rainpress
         :preserveColors => true,
         :skipMisc => true
       }  
+    
       # plain unix-newline
       input = "\n"
       assert_equal('', @packer.compress(input, options))
+    
       # plain windows newline
       input = "\r\n"
       assert_equal('', @packer.compress(input, options))
+    
       # no newline
       input = "rn"
       assert_equal('rn', @packer.compress(input, options))
+    
       # newlines floatin in text
       input = "sss\n||\r\nsss"
       assert_equal('sss||sss', @packer.compress(input, options))
+    
       # empty string
       input = ''
       assert_equal('', @packer.compress(input, options))
-		end
+	end
     
+    # Test Rainpress::Packer.remove_spaces
     def test_remove_spaces
       options = {
         :preserveComments => true,
@@ -66,11 +77,13 @@ module Rainpress
         :preserveColors => true,
         :skipMisc => true
       }  
+      
       # (a) Turn mutiple Spaces into a single, but not less
       input = '  ' # 2 spaces
       assert_equal(' ', @packer.compress(input, options))
       input = '   ' # 3 spaces
       assert_equal(' ', @packer.compress(input, options))
+      
       # (b) remove spaces around ;:{},
       input = ' ; '
       assert_equal(';', @packer.compress(input, options))
@@ -87,6 +100,7 @@ module Rainpress
       assert_equal('', @packer.compress(input, options))
     end
     
+    # Test Rainpress::Packer.shorten_colors
     def test_shorten_colors
       options = {
         :preserveComments => true,
@@ -119,6 +133,7 @@ module Rainpress
       assert_equal('color:red;', @packer.compress(input, options))
     end
   
+    # Test Rainpress::Packer.do_misc
     def test_do_misc
       options = {
         :preserveComments => true,
@@ -191,5 +206,5 @@ module Rainpress
       assert_equal('font: 700 1px;', @packer.compress(input, options))
     end
 		
-	end
+  end
 end	
