@@ -52,7 +52,7 @@ CLEAN.include('locale/*/LC_MESSAGES');
 
 ## Deb(ian) Package Tasks ##  
 
-task :source_deb do 
+task :source_deb => [:build_mo] do 
   sh 'debuild -S -I.svn -us -uc'
 end
 task :source_deb => [:clean]
