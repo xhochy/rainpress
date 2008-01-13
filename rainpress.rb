@@ -15,7 +15,7 @@ opts = GetoptLong.new(
 $infile = nil
 $outfile = nil
 
-GetText::bindtextdomain('rainpress')
+GetText::bindtextdomain('rainpress', 'locale')
 
 ## Functions ##
 

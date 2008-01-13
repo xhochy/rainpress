@@ -22,6 +22,9 @@ task :test do
 end
 
 task :build_pot => [File.join('locale', 'rainpress.pot')]
+task :build_mo do
+	GetText::create_mofiles(true, 'locale', 'locale')
+end
 task :doc => ['doc/index.html']
 
 task :all => [:doc, :test]
@@ -45,6 +48,7 @@ CLEAN.include('configure-stamp')
 CLEAN.include('debian/rainpress/')
 CLEAN.include('debian/rainpress-doc/')
 CLEAN.include('debian/files')
+CLEAN.include('locale/*/LC_MESSAGES');
 
 ## Deb(ian) Package Tasks ##  
 
