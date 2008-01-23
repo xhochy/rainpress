@@ -2,7 +2,7 @@ Source: rainpress
 Section: devel
 Priority: extra
 Maintainer: Uwe L. Korn <packaging@xhochy.com>
-Build-Depends: debhelper (>= 5), rake, rdoc, graphviz
+Build-Depends: debhelper (>= 5), rake, rdoc, graphviz, libgettext-ruby
 Standards-Version: 3.7.3
 
 Package: rainpress
