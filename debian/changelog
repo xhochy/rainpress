@@ -1,3 +1,9 @@
+rainpress (1.0) unstable; urgency=low
+
+  * Release 1.0 
+
+ -- Uwe L. Korn <packaging@xhochy.com>  Wed, 23 Jan 2008 17:43:06 +0100
+
 rainpress (0.1) unstable; urgency=low
 
   * Initial release.
