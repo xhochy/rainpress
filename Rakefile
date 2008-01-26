@@ -17,14 +17,18 @@ doc = {
 
 ## Tasks ##
 
+desc 'Run unit tests'
 task :test do
   sh 'rcov rainpress_test.rb'
 end
 
+desc 'Build pot-file from sourcecode'
 task :build_pot => [File.join('locale', 'rainpress.pot')]
+desc 'Complie *.po-files to binary mo\'s'
 task :build_mo do
 	GetText::create_mofiles(true, 'locale', 'locale')
 end
+desc 'Generate the sourcecode documentation'
 task :doc => ['doc/index.html']
 
 task :all => [:doc, :test]
@@ -52,11 +56,13 @@ CLEAN.include('locale/*/LC_MESSAGES');
 
 ## Deb(ian) Package Tasks ##  
 
+desc 'Build debian-source-package'
 task :source_deb => [:build_mo] do 
   sh 'debuild -S -I.svn -us -uc'
 end
 task :source_deb => [:clean]
 
+desc 'Build debian-package using fakeroot'
 task :binary_deb_fakeroot do
   sh 'dpkg-buildpackage -rfakeroot'
 end
