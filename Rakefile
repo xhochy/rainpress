@@ -11,7 +11,7 @@ require 'gettext/utils'
 ## Config ##
 
 doc = {
-  'Files' => FileList['*.rb', 'rainpress/*.rb'],
+  'Files' => FileList['*.rb', File.join('rainpress', '*.rb')],
   'Title' => 'Rainpress'
 }
 
@@ -29,7 +29,7 @@ task :build_mo do
 	GetText::create_mofiles(true, 'locale', 'locale')
 end
 desc 'Generate the sourcecode documentation'
-task :doc => ['doc/index.html']
+task :doc => [File.join('doc', 'index.html')]
 
 task :all => [:doc, :test]
 task :default => [:all]
@@ -45,14 +45,14 @@ end
 
 ## clean Task ##
 
-CLEAN.include('doc/')
-CLEAN.include('coverage/')
+CLEAN.include('doc')
+CLEAN.include('coverage')
 CLEAN.include('build-stamp')
 CLEAN.include('configure-stamp')
-CLEAN.include('debian/rainpress/')
-CLEAN.include('debian/rainpress-doc/')
-CLEAN.include('debian/files')
-CLEAN.include('locale/*/LC_MESSAGES');
+CLEAN.include(File.join('debian', 'rainpress'))
+CLEAN.include(File.join('debian', 'rainpress-doc'))
+CLEAN.include(File.join('debian', 'files'))
+CLEAN.include(File.join('locale', '*', 'LC_MESSAGES'));
 
 ## Deb(ian) Package Tasks ##  
 
@@ -67,7 +67,6 @@ task :binary_deb_fakeroot do
   sh 'dpkg-buildpackage -rfakeroot'
 end
 task :binary_deb_fakeroot => [:source_deb]
-
 
 ## File Tasks ##
 
