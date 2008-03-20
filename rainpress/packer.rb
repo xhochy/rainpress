@@ -7,6 +7,32 @@
 # unnecessary characters and replaces some attributes with a shorter equivalent 
 # name.
 #
+# Copyright:: Copyright (c) 2007-2008 Uwe L. Korn
+#
+# == License
+#
+# Copyright (c) 2007-2008 Uwe L. Korn
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+# Remark(not part of the license text): This is a MIT-style license
+#
 # == Links
 #
 # * {Rainpress Website}[http://rainpress.xhochy.com/]
@@ -18,12 +44,15 @@
 # * {Mailinglist}[http://groups.google.com/group/xy-oss-projects-discussion]
 # * {Continous Integration Builds and Tests}[http://cruisecontrol-rb.xhochy.com/builds/rainpress]
 # * {Freshmeat Record}[http://freshmeat.net/projects/rainpress]
+# * {Ohloh listing}[http://www.ohloh.net/projects/12620/]
 module Rainpress
 
   # == Information
   #
   # This is the main class of Rainpress, create an instance of it to compress
   # your CSS-styles.
+  #
+  # Author:: Uwe L. Korn <uwelk@xhochy.org>
   #
   # == Simple Usage
   #
@@ -62,6 +91,11 @@ module Rainpress
 	end
   
     # Remove all comments out of the CSS-Document
+    #
+    # Only /* text */ comments are supported. 
+    # Attention: If you are doing css hacks for IE using the comment tricks,
+    # they will be removed using this function. Please consider for IE css style
+    # corrections the usage of conditionals comments in your (X)HTML document.
   	def remove_comments(script)
       input = script
       script = ''
@@ -83,14 +117,18 @@ module Rainpress
       end
       
       # return
-  		script
+  	  script
   	end
 
     # Remove all newline characters
+    #
+    # We take care of Windows(\r\n), Unix(\n) and Mac(\r) newlines.
   	def remove_newlines(script)
   		script.gsub(/\n|\r/,'')
   	end
   	
+  	# Remove unneeded spaces
+  	#
     # 1. Turn mutiple spaces into a single
     # 2. Remove spaces around ;:{},
     # 3. Remove tabs
@@ -125,7 +163,7 @@ module Rainpress
         end
         out
       end
-      # #AABBCC to #ABC, keep if preceed by a '='
+      # Convert #AABBCC to #ABC, keep if preceed by a '='
       style = style.gsub(/([^\"'=\s])(\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/) do |match|
         out = match        
         if ($3.downcase == $4.downcase) and ($5.downcase == $6.downcase) and ($7.downcase == $8.downcase)
@@ -133,29 +171,40 @@ module Rainpress
         end
         out
       end
+
+      # At the moment we assume that colours only appear before ';' or '}' and 
+      # after a ':', if there could be an occurence of a color before or after
+      # an other character, submit either a bug report or, better, a patch that
+      # enables Rainpress to take care of this.
+      
       # shorten several names to numbers
+      ## shorten white -> #fff
       style = style.gsub(/:[\s]*white[\s]*;/, ':#fff;')
       style = style.gsub(/:[\s]*white[\s]*\}/, ':#fff}')
+      ## shorten black -> #000
       style = style.gsub(/:[\s]*black[\s]*;/, ':#000;')
       style = style.gsub(/:[\s]*black[\s]*\}/, ':#000}')
       # shotern several numbers to names
+      ## shorten #f00 or #ff0000 -> red
       style = style.gsub(/:[\s]*#([fF]00|[fF]{2}0000);/, ':red;')
       style = style.gsub(/:[\s]*#([fF]00|[fF]{2}0000)\}/, ':red}')
       
   	  style
     end
-  
-    # Do miscellaneous compression methods on the style
+
+    # Do miscellaneous compression methods on the style.
     def do_misc(script)
       # Replace 0(pt,px,em,%) with 0 but only when preceded by : or a white-space
       script = script.gsub(/([\s:]+)(0)(px|em|%|in|cm|mm|pc|pt|ex)/) do |match|
         match.gsub(/(px|em|%|in|cm|mm|pc|pt|ex)/,'')
       end
-      # Replace 0 0 0 0; with 0.
+      # Replace :0 0 0 0(;|}) with :0(;|})
       script = script.gsub(':0 0 0 0;', ':0;')
       script = script.gsub(':0 0 0 0}', ':0}')
+      # Replace :0 0 0(;|}) with :0(;|})
       script = script.gsub(':0 0 0;', ':0;')
       script = script.gsub(':0 0 0}', ':0}')
+      # Replace :0 0(;|}) with :0(;|})
       script = script.gsub(':0 0}', ':0}')
       script = script.gsub(':0 0;', ':0;')
       # Replace background-position:0; with background-position:0 0;
@@ -164,18 +213,19 @@ module Rainpress
       script = script.gsub(/[:\s]0+\.(\d+)/) do |match|
         match.sub('0', '') # only first '0' !!
       end
-      # Replace ;;;; with ;
+      # Replace multiple ';' with a single ';'
       script = script.gsub(/[;]+/, ';')
       # Replace ;} with }
       script = script.gsub(';}', '}')
       # Replace background-color: with background:
       script = script.gsub('background-color:', 'background:')
-      # Replace font-weight:normal; with 400, bold with 700
+      # Replace font-weight:normal; with 400
       script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*;/,'font-weight:400;')
       script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*\}/,'font-weight:400}')
       script = script.gsub(/font[\s]*:[\s]*normal[\s;\}]*/) do |match|
         match.sub('normal', '400')
       end
+      # Replace font-weight:bold; with 700
       script = script.gsub(/font-weight[\s]*:[\s]*bold[\s]*;/,'font-weight:700;')
       script = script.gsub(/font-weight[\s]*:[\s]*bold[\s]*\}/,'font-weight:700}')
       script = script.gsub(/font[\s]*:[\s]*bold[\s;\}]*/) do |match|
