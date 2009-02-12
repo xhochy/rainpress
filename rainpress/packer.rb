@@ -217,8 +217,12 @@ module Rainpress
       script = script.gsub(/[;]+/, ';')
       # Replace ;} with }
       script = script.gsub(';}', '}')
-      # Replace background-color: with background:
-      script = script.gsub('background-color:', 'background:')
+      
+      # Do not include again: 
+      # -> reported as bug #282496 in Launchpad
+      # # Replace background-color: with background:
+      # # script = script.gsub('background-color:', 'background:')
+      
       # Replace font-weight:normal; with 400
       script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*;/,'font-weight:400;')
       script = script.gsub(/font-weight[\s]*:[\s]*normal[\s]*\}/,'font-weight:400}')

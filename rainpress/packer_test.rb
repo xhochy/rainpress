@@ -225,10 +225,6 @@ module Rainpress
       input = 'ss;sss;}ss'
       assert_equal('ss;sss}ss', @packer.compress(input, options))
       
-      # Replace background-color: with background:
-      input = 'background-color:'
-      assert_equal('background:', @packer.compress(input, options))
-      
       # Replace font-weight:normal; with 400, bold with 700
       input = 'font-weight: normal;'
       assert_equal('font-weight:400;', @packer.compress(input, options))
