@@ -40,7 +40,12 @@ require File.join(File.dirname(__FILE__), *%w[.. lib rainpress])
 opts = GetoptLong.new(
   ['--help', '-h', GetoptLong::NO_ARGUMENT],
   ['--input', '-i', GetoptLong::REQUIRED_ARGUMENT],
-  ['--output', '-o', GetoptLong::REQUIRED_ARGUMENT]
+  ['--output', '-o', GetoptLong::REQUIRED_ARGUMENT],
+  ['--keep-comments', '-c', GetoptLong::NO_ARGUMENT],
+  ['--keep-newlines', '-n', GetoptLong::NO_ARGUMENT],
+  ['--keep-spaces', '-s', GetoptLong::NO_ARGUMENT],
+  ['--leave-spaces', '-k', GetoptLong::NO_ARGUMENT],
+  ['--skip-misc', '-m', GetoptLong::NO_ARGUMENT]
 )
 
 $infile = nil
@@ -65,10 +70,18 @@ def usage
   puts '--help, -h                 ' + GetText::_('Display this help')
   puts '--input, -i <file>         ' + GetText::_('The CSS-file to be compressed, if not set stdin is used')
   puts '--output, -o <file>        ' + GetText::_('The output file, if not set, stdout is used')
+  puts '--keep-comments, -c        ' + GetText::_('Do not remove comments')
+  puts '--keep-newlines, -n        ' + GetText::_('Do not remove line breaks')
+  puts '--keep-spaces, -s          ' + GetText::_('Do not remove multiple spaces')
+  puts '--leave-colors, -k         ' + GetText::_('Do not change color names')
+  puts '--skip-misc, -m            ' + GetText::_('Skip all miscellaneous tasks')
   exit
 end
 
 ## Main ##
+
+# The options that will be passed to the compress method
+$options = {}
 
 opts.each do |opt, arg|
   case opt
@@ -78,6 +91,16 @@ opts.each do |opt, arg|
       $infile = arg
     when '--output'
       $outfile = arg   
+    when '--keep-comments'
+      $options[:preserveComments] = true
+    when '--keep-newlines'
+      $options[:preserveNewlines] = true
+    when '--keep-spaces'
+      $options[:preserveSpaces] = true
+    when '--leave-colors'
+      $options[:preserveColors] = true
+    when '--skip-misc'
+      $options[:skipMisc] = true
   end
 end
 
@@ -91,7 +114,7 @@ end
 # Create a new Rainpress::Packer instance which we'll use for compressing
 packer = Rainpress::Packer.new
 # Compress the inputted text
-$output = packer.compress($input)
+$output = packer.compress($input, $options)
 
 # Check if a output file is set, if not write to stdout
 if $outfile == nil
@@ -102,3 +125,4 @@ else
     f.write $output
   end
 end
+

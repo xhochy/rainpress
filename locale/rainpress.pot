@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-02-17 18:28+0100\n"
-"PO-Revision-Date: 2009-02-17 18:28+0100\n"
+"POT-Creation-Date: 2009-02-17 21:12+0100\n"
+"PO-Revision-Date: 2009-02-17 21:12+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: bin/rainpress:65
+#: bin/rainpress:70
 msgid "Display this help"
 msgstr ""
 
-#: bin/rainpress:66
+#: bin/rainpress:71
 msgid "The CSS-file to be compressed, if not set stdin is used"
 msgstr ""
 
-#: bin/rainpress:67
+#: bin/rainpress:72
 msgid "The output file, if not set, stdout is used"
+msgstr ""
+
+#: bin/rainpress:73
+msgid "Do not remove comments"
+msgstr ""
+
+#: bin/rainpress:74
+msgid "Do not remove line breaks"
+msgstr ""
+
+#: bin/rainpress:75
+msgid "Do not remove multiple spaces"
+msgstr ""
+
+#: bin/rainpress:76
+msgid "Do not change color names"
+msgstr ""
+
+#: bin/rainpress:77
+msgid "Skip all miscellaneous tasks"
 msgstr ""
