@@ -28,7 +28,7 @@
 # Copyright:: Copyright (c) 2007-2008 Uwe L. Korn
 # License:: MIT-style License (see Rainpress)
 
-require 'rainpress/packer_test.rb'
+require 'lib/rainpress_test.rb'
 require 'test/unit/ui/console/testrunner'
 
 Test::Unit::UI::Console::TestRunner.run(Rainpress::TestPacker)

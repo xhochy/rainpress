@@ -35,8 +35,9 @@ install: build
 	# Add here commands to install the package into debian/rainpress.
 	rake doc
 	cp -r $(CURDIR)/doc/* $(CURDIR)/debian/rainpress-doc/usr/share/doc/rainpress-doc/html
-	install -m 555 -g root -o root $(CURDIR)/rainpress.rb $(CURDIR)/debian/rainpress/usr/lib/ruby/1.8
-	install -m 444 -g root -o root $(CURDIR)/rainpress/packer.rb $(CURDIR)/debian/rainpress/usr/lib/ruby/1.8/rainpress
+	cp -r $(CURDIR)/locale/ $(CURDIR)/bin/rainpress $(CURDIR)/debian/rainpress/usr/lib/ruby/1.8/rainpress
+	install -m 555 -g root -o root $(CURDIR)/bin/rainpress $(CURDIR)/debian/rainpress/usr/lib/ruby/1.8/rainpress/binary.rb
+	install -m 444 -g root -o root $(CURDIR)/lib/rainpress.rb $(CURDIR)/debian/rainpress/usr/lib/ruby/1.8/rainpress
 	install -m 555 -g root -o root $(CURDIR)/debian/rainpress.sh $(CURDIR)/debian/rainpress/usr/bin/rainpress
 
 

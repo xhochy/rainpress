@@ -35,6 +35,8 @@
 require 'rake/clean'
 # Use the gettext-utility functions for pot and mo generation
 require 'gettext/utils'
+# We use this helper to build the gem of Rainpress
+require 'rake/gempackagetask'
 
 ## Config ##
 
@@ -130,7 +132,7 @@ task :source_deb => [:clean]
 # builds the package in a clean chroot-environment.
 desc 'Build debian-package using fakeroot'
 task :binary_deb_fakeroot do
-  sh 'dpkg-buildpackage -rfakeroot'
+  sh 'dpkg-buildpackage -rfakeroot -us -uc'
 end
 task :binary_deb_fakeroot => [:source_deb]
 
@@ -142,8 +144,9 @@ task :binary_deb_fakeroot => [:source_deb]
 # uploaded to https://translations.launchpad.net/rainpress/ so that there's
 # always the up-to-date version, so that the translation keeps up with the 
 # development.
-file File.join('locale', 'rainpress.pot') => 'rainpress.rb' do
-  sh 'rgettext rainpress.rb -o ' + File.join('locale', 'rainpress.pot')
+file File.join('locale', 'rainpress.pot') => 'bin/rainpress' do
+  rm_f File.join('locale', 'rainpress.pot')
+  sh 'rgettext bin/rainpress -o ' + File.join('locale', 'rainpress.pot')
   puts '!!! Remember to upload the updated pot-file to Launchpad/Translations !!!'
 end
 
@@ -157,3 +160,35 @@ file File.join('doc', 'index.html') => doc['Files'] do
   cmd+= '--op doc/ --tab-width 4'
   sh cmd
 end 
+
+require 'rubygems'
+
+Dir['locale/*']
+
+spec = Gem::Specification.new do |s|
+  s.name = %q{rainpress}
+  s.version = "1.1.0"
+
+  s.specification_version = 2 if s.respond_to? :specification_version=
+
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Uwe L. Korn", "Jeff Smick"]
+  s.date = %q{2009-02-17}
+  s.description = %q{README}
+  s.email = %q{rainpress@xhochy.com}
+  s.files = ['init.rb', 'README.rdoc', "VERSION.yml", 'bin/rainpress', 'lib/rainpress.rb'] + FileList['locale/*', 'locale/*/*', 'locale/*/*/*']
+  s.has_rdoc = true
+  s.homepage = %q{http://rainpress.xhochy.com}
+  s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
+  s.require_paths = ['lib']
+  s.rubygems_version = %q{1.1.1}
+  s.summary = %q{README}
+end
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_zip = true
+  pkg.need_tar = true
+end
+
+task :release => [:build_mo, :repackage, :binary_deb_fakeroot]
+

@@ -33,7 +33,7 @@ require 'getoptlong'
 require 'gettext'
 # Do not include rainpress/packer via global include, this might include
 # a false file, we want the Packer version which is shipped with this file.
-require File.join(File.dirname(__FILE__), 'rainpress', 'packer')
+require File.join(File.dirname(__FILE__), *%w[.. lib rainpress])
 
 ## Var Init ##
 
@@ -46,7 +46,7 @@ opts = GetoptLong.new(
 $infile = nil
 $outfile = nil
 
-GetText::bindtextdomain('rainpress', 'locale')
+GetText::bindtextdomain('rainpress', File.join(File.dirname(__FILE__), *%w[.. locale]))
 
 ## Functions ##
 

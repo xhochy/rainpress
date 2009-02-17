@@ -29,7 +29,7 @@
 # License:: MIT-style License (see Rainpress)require 'test/unit'
 
 require 'test/unit'
-require File.join(File.dirname(__FILE__), 'packer.rb')
+require File.join(File.dirname(__FILE__), 'rainpress.rb')
 
 module Rainpress
   # This class keeps all Tests for the class Rainpress::Packer

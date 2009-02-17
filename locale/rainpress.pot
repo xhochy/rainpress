@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-01-05 15:06+0100\n"
-"PO-Revision-Date: 2008-01-05 15:06+0100\n"
+"POT-Creation-Date: 2009-02-17 18:28+0100\n"
+"PO-Revision-Date: 2009-02-17 18:28+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: rainpress.rb:27
+#: bin/rainpress:65
 msgid "Display this help"
 msgstr ""
 
-#: rainpress.rb:28
+#: bin/rainpress:66
 msgid "The CSS-file to be compressed, if not set stdin is used"
 msgstr ""
 
-#: rainpress.rb:29
+#: bin/rainpress:67
 msgid "The output file, if not set, stdout is used"
 msgstr ""
