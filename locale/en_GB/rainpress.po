@@ -7,24 +7,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rainpress\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2008-01-05 15:06+0100\n"
-"PO-Revision-Date: 2008-01-13 12:47+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-02-17 21:12+0100\n"
+"PO-Revision-Date: 2009-02-17 20:43+0000\n"
+"Last-Translator: Uwe L. Korn <uwelk@xhochy.org>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-01-13 13:56+0000\n"
+"X-Launchpad-Export-Date: 2009-02-24 11:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: rainpress.rb:27
+#: bin/rainpress:70
 msgid "Display this help"
 msgstr "Display this help"
 
-#: rainpress.rb:28
+#: bin/rainpress:71
 msgid "The CSS-file to be compressed, if not set stdin is used"
 msgstr "The CSS-file to be compressed, if not set stdin is used"
 
-#: rainpress.rb:29
+#: bin/rainpress:72
 msgid "The output file, if not set, stdout is used"
 msgstr "The output file, if not set, stdout is used"
+
+#: bin/rainpress:73
+msgid "Do not remove comments"
+msgstr "Do not remove comments"
+
+#: bin/rainpress:74
+msgid "Do not remove line breaks"
+msgstr "Do not remove line breaks"
+
+#: bin/rainpress:75
+msgid "Do not remove multiple spaces"
+msgstr "Do not remove multiple spaces"
+
+#: bin/rainpress:76
+msgid "Do not change color names"
+msgstr "Do not change colour names"
+
+#: bin/rainpress:77
+msgid "Skip all miscellaneous tasks"
+msgstr "Skip all miscellaneous tasks"
