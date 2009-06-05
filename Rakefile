@@ -35,8 +35,9 @@
 require 'rake/clean'
 # Use the gettext-utility functions for pot and mo generation
 require 'gettext/utils'
-# We use this helper to build the gem of Rainpress
-require 'rake/gempackagetask'
+require 'rubygems'
+
+Dir['tasks/**/*.rake'].each { |rake| load rake }
 
 ## Config ##
 
@@ -162,33 +163,6 @@ file File.join('doc', 'index.html') => doc['Files'] do
 end 
 
 require 'rubygems'
-
-Dir['locale/*']
-
-spec = Gem::Specification.new do |s|
-  s.name = %q{rainpress}
-  s.version = "1.1.0"
-
-  s.specification_version = 2 if s.respond_to? :specification_version=
-
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Uwe L. Korn", "Jeff Smick"]
-  s.date = %q{2009-02-17}
-  s.description = %q{README}
-  s.email = %q{rainpress@xhochy.com}
-  s.files = ['init.rb', 'README.rdoc', "VERSION.yml", 'bin/rainpress', 'lib/rainpress.rb'] + FileList['locale/*', 'locale/*/*', 'locale/*/*/*']
-  s.has_rdoc = true
-  s.homepage = %q{http://rainpress.xhochy.com}
-  s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
-  s.require_paths = ['lib']
-  s.rubygems_version = %q{1.1.1}
-  s.summary = %q{README}
-end
-
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_zip = true
-  pkg.need_tar = true
-end
 
 task :release => [:build_mo, :repackage, :binary_deb_fakeroot]
 
