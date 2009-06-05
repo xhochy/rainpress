@@ -40,14 +40,11 @@ Remark(not part of the license text): This is a MIT-style license
 == Links
 
 * {Rainpress Website}[http://rainpress.xhochy.com/]
-* {SVN repository}[http://code.google.com/p/rainpress/source]
+* {Git repository}[http://github.com/xhochy/rainpress/tree/master]
 * {Bugtracker}[https://bugs.launchpad.net/rainpress/]
 * {Wiki}[http://code.google.com/p/rainpress/w/list]
 * {Translations}[https://translations.launchpad.net/rainpress/]
 * {XhochY Weblog (for Announcements about Rainpress)}[http://xhochy.org/en/]
 * {Mailinglist}[http://groups.google.com/group/xy-oss-projects-discussion]
-* {Continous Integration Builds and Tests}[http://cruisecontrol-rb.xhochy.com/builds/rainpress]
 * {Freshmeat Record}[http://freshmeat.net/projects/rainpress]
 * {Ohloh listing}[http://www.ohloh.net/projects/12620/]
-* {GitHub}[http://github.com/sprsquish/rainpress/tree/master]
-
