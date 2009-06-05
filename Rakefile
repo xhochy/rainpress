@@ -35,7 +35,12 @@
 require 'rake/clean'
 # Use the gettext-utility functions for pot and mo generation
 require 'gettext/utils'
+
 require 'rubygems'
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+require 'spec/rake/spectask'
 
 Dir['tasks/**/*.rake'].each { |rake| load rake }
 
@@ -162,7 +167,4 @@ file File.join('doc', 'index.html') => doc['Files'] do
   sh cmd
 end 
 
-require 'rubygems'
-
-task :release => [:build_mo, :repackage, :binary_deb_fakeroot]
-
+task :release => [:build_mo]
